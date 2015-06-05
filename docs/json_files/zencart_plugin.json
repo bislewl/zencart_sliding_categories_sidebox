@@ -1,0 +1,9 @@
+{
+    "plugin_id": "0",
+    "github_repo": "https://github.com/bislewl/zencart_sliding_categories_sidebox.git",
+    "name": "Sliding Categories Sidebox",
+    "author": "bislewl",
+    "description": "An animated sliding categories sidebox",
+    "versions_supported": "1.3.9h,1.5.0,1.5.1,1.5.2,1.5.3,1.5.4,1.6.0",
+    "support_thread": ""
+}
