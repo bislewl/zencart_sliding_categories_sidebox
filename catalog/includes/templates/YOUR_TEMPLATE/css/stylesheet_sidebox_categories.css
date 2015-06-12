@@ -48,7 +48,7 @@
 #categoriesContent > ul > li.active > a span {
   background: #BE0000;
 }
-#categoriesContent span.cnt {
+#categoriesContent span.cnt, #categoriesContent span.sub-cnt{
   position: absolute;
   top: 6px;
   right: 10px;
@@ -57,7 +57,10 @@
   background: none;
 }
 /* Sub menu */
-#categoriesContent ul ul {
+#categoriesContent ul ul.sub-ul {
+  display: none;
+}
+#categoriesContent ul ul ul.sub-sub-ul {
   display: none;
 }
 #categoriesContent ul ul li {
@@ -69,12 +72,45 @@
   display: block;
   color: #ed1144;
 }
-#categoriesContent ul ul a:hover {
-  color: #BE0000;
+#categoriesContent ul ul a {
+  padding: 5px;
+  display: block;
+  color: #ed1144;
+}
+#categoriesContent ul ul ul a {
+  padding: 5px;
+  display: block;
+  color: #000000;
+}
+#categoriesContent ul ul ul li {
+  border: 1px solid #e0e0e0;
+  border-top: 0;
+}
+#categoriesContent ul.sub-sub-ul{
+  //border: 1px solid #000000;
+  margin-left: 10px;
 }
 #categoriesContent ul ul li.odd {
   background: #f4f4f4;
 }
 #categoriesContent ul ul li.even {
   background: #fff;
+}
+#categoriesContent li.has-sub a span.cnt:before{
+    content: "+";
+}
+#categoriesContent li.has-sub.active a span.cnt:before{
+    content: "-";
+}
+#categoriesContent li.has-sub-sub a span.sub-cnt:before{
+    content: "+";
+}
+#categoriesContent li.has-sub-sub.active a span.sub-cnt:before{
+    content: "-";
+}
+#categoriesContent ul li.active ul.sub-ul{
+    display: block;
+}
+#categoriesContent ul li.active ul.sub-ul li.active ul.sub-sub-ul{
+    display: block;
 }

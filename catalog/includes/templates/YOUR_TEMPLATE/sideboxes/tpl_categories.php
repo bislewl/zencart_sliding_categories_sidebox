@@ -33,18 +33,33 @@ while (!$categories_tab->EOF) {
     //echo '</a>' . "\n";
 
     if ($subcategories_tab->RecordCount() > 0) {
-        $content .= '<ul>' . "\n";
-
+        $content .= '<ul class="sub-ul">' . "\n";
         while (!$subcategories_tab->EOF) {
-
             $cPath_new = zen_get_path($subcategories_tab->fields['categories_id']);
             $cPath_new = str_replace('=0_', '=', $cPath_new);
             $cPath_new = "cPath=" . $subcategories_tab->fields['categories_id'];
-            $content .= '<li>' . '<a href="' . zen_href_link(FILENAME_DEFAULT, $cPath_new) . '">' . htmlentities($subcategories_tab->fields['categories_name'], ENT_QUOTES, 'UTF-8') . '</a></li>' . "\n";
+            $sub_subcategories_tab = $db->Execute("SELECT c.categories_id, cd.categories_name FROM " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd WHERE c.categories_id=cd.categories_id AND c.parent_id= '" . (int) $subcategories_tab->fields['categories_id'] . "' AND cd.language_id='" . (int) $_SESSION['languages_id'] . "' AND c.categories_status='1' ORDER BY c.sort_order, cd.categories_name;");
+            if($sub_subcategories_tab->RecordCount() > 0){
+                $sub_sub_class = 'has-sub-sub';
+            }
+            else{
+                $sub_sub_class = '';
+            }
+            $content .= '<li class="'.$sub_sub_class.'">' . '<a href="' . zen_href_link(FILENAME_DEFAULT, $cPath_new) . '">' . htmlentities($subcategories_tab->fields['categories_name'], ENT_QUOTES, 'UTF-8') . '</a>' . "\n";
+            if($sub_subcategories_tab->RecordCount() > 0){
+                $content .= '<ul class="sub-sub-ul">';
+                while(!$sub_subcategories_tab->EOF){
+                    $content .= '<li>' . '<a href="' . zen_href_link(FILENAME_DEFAULT, $cPath_new.'_'.$sub_subcategories_tab->fields['categories_id']) . '">' . htmlentities($sub_subcategories_tab->fields['categories_name'], ENT_QUOTES, 'UTF-8') . '</a>'.'</li>' . "\n";
+                    $sub_subcategories_tab->MoveNext();
+                }
+                $content .= '</ul>';
+            }
+            $content .= '</li>';
             $subcategories_tab->MoveNext();
         }
         $content .= '</ul>' . "\n";
     }
+    /*
     $products_tab_query = "SELECT p.`products_id`, pd.`products_name`, pd.`language_id` FROM " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd WHERE p.`master_categories_id`='" . (int) $categories_tab->fields['categories_id'] . "' AND p.`products_id`=pd.`products_id` AND p.products_status='1' AND pd.`language_id`='" . (int) $_SESSION['languages_id'] . "' ORDER BY p.`products_sort_order`;";
     $products_tab = $db->Execute($products_tab_query);
     if ($products_tab->RecordCount() > 0) {
@@ -57,6 +72,7 @@ while (!$categories_tab->EOF) {
         }
         $content .= '</ul>' . "\n";
     }
+     */
     $content .= '</li>' . "\n";
 
     $categories_tab->MoveNext();
